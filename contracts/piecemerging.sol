@@ -24,15 +24,24 @@ contract PieceMerging is PieceFactory {
 
     PieceInterface pieceContract;
 
+    modifier ownerOf(uint _pieceId) {
+        require(msg.sender == pieceToOwner[_pieceId]);
+        _;
+    }
+
     function setPieceAddress(address _address) external {
         pieceContract = PieceInterface(_address);
     }
 
-    function mergeAndMultiply(uint _PieceId, uint _targetDna, string memory _types) internal {
+    uint pieceMergingFee = 0.1 ether;
+
+    function mergeAndMultiply(uint _PieceId, uint _targetDna, string memory _types) internal ownerOf(_pieceId) payable {
         require(msg.sender == PieceToOwner[_avatarId]);
+        require(msg.value == pieceMergingFee);
         Piece storage myPiece = pieces[_avatarId];
         _targetDna = _targetPiece % dnaModulus;
         uint newDna = (myPiece.dna + _targetDna) / 2;
+        //pieces cross type?
         _createPiece("NoName", newDna);
     }
 

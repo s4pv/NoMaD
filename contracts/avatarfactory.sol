@@ -18,6 +18,13 @@ contract AvatarFactory is Ownable {
         uint age;
         uint32 level;
         uint32 readyTime;
+        //habilities
+        uint8 luck;
+        //uint8 intellect;
+        //uint8 agility;
+        //uint8 strength;
+        //uint8 stamina;
+        uint8 breedCount; //set to 0 on line 39
     }
 
     Avatar[] public avatars;
@@ -25,8 +32,11 @@ contract AvatarFactory is Ownable {
     mapping (uint => address) public avatarToOwner;
     mapping (address => uint) ownerAvatarCount;
 
-    function _createAvatar(string memory _name, uint _dna) internal {
-        uint id = avatars.push(Avatar(_name, _dna), uint32(now + cooldownTime)) -1;
+    uint creationFee = 1 ether;
+
+    function _createAvatar(string memory _name, uint _dna) internal payable {
+        require(msg.value == creationFee);
+        uint id = avatars.push(Avatar(_name, _dna), uint32(now + cooldownTime), 0) -1;
         avatarToOwner[id] = msg.sender;
         ownerAvatarCount[msg.sender]++;
         emit NewAvatar(id, _name, _dna);

@@ -10,13 +10,22 @@ contract PieceHelper is PieceMerging {
     _;
   }
 
-  function changeName(uint _pieceId, string calldata _newName) external aboveLevel(2, _pieceId) {
-    require(msg.sender == pieceToOwner[_pieceId]);
+  function withdraw() external onlyOwner {
+    address _owner = owner();
+    _owner.transfer(address(this).balance);
+  }
+
+  uint changeNameFee = 0.1 ether;
+  uint changeDnaFee = 10 ether;
+
+  //modify functions to ones that have sense
+  function changeName(uint _pieceId, string calldata _newName) external aboveLevel(2, _pieceId) ownerOf(_pieceId) payable {
+    require(msg.value == changeNameFee);
     pieces[_piecesId].name = _newName;
   }
 
-  function changeDna(uint _pieceId, uint _newDna) external aboveLevel(10, _pieceId) {
-    require(msg.sender == pieceToOwner[_pieceId]);
+  function changeDna(uint _pieceId, uint _newDna) external aboveLevel(10, _pieceId) ownerOf(_pieceId) payable {
+    require(msg.value == changeDnaFee);
     pieces[_pieceId].dna = _newDna;
   }
 

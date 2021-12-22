@@ -10,9 +10,17 @@ contract PieceFactory is Ownable {
 
     struct Piece {
         string name;
+        string class;
         uint dna;
         uint32 level;
         uint32 readyTime;
+        //habilities
+        uint8 luck;
+        //uint8 intellect;
+        //uint8 agility;
+        //uint8 strength;
+        //uint8 stamina;
+        uint8 pieceCount; //set to 0 on line 39
     }
 
     Piece[] public pieces;
@@ -20,8 +28,11 @@ contract PieceFactory is Ownable {
     mapping (uint => address) public pieceToOwner;
     mapping (address => uint) ownerPieceCount;
 
-    function _createPiece(string memory _name, uint _dna) internal {
-        uint id = pieces.push(Piece(_name, _dna)) -1;
+    uint pieceCreationFee = 0.1 ether;
+
+    function _createPiece(string memory _name, uint _dna) internal payable {
+        require(msg.value == pieceCreationFee);
+        uint id = pieces.push(Piece(_name, _dna),0) -1;
         pieceToOwner[id] = msg.sender;
         ownerPieceCount[msg.sender]++;
         emit NewPiece(id, _name, _dna);

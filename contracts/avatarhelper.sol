@@ -9,14 +9,20 @@ contract AvatarHelper is AvatarBreeding {
     require(avatars[_avatarId].level >= _level);
     _;
   }
+  function withdraw() external onlyOwner {
+    address _owner = owner();
+    _owner.transfer(address(this).balance);
+  }
+  uint changeNameFee = 0.1 ether;
+  uint changeDnaFee = 10 ether;
 
-  function changeName(uint _avatarId, string calldata _newName) external aboveLevel(2, _avatarId) {
-    require(msg.sender == avatarToOwner[_avatarId]);
+  function changeName(uint _avatarId, string calldata _newName) external payable aboveLevel(2, _avatarId) ownerOf(_avatarId) {
+    require(msg.value == changeNameFee);
     avatars[_avatarsId].name = _newName;
   }
 
-  function changeDna(uint _avatarId, uint _newDna) external aboveLevel(10, _avatarId) {
-    require(msg.sender == avatarToOwner[_avatarId]);
+  function changeDna(uint _avatarId, uint _newDna) external payable aboveLevel(10, _avatarId) ownerOf(_avatarId) {
+    require(msg.value == changeDnaFee);
     avatars[_avatarId].dna = _newDna;
   }
 

@@ -9,8 +9,8 @@ contract AvatarInterface{
         //Example: Qualities from Cryptokitties
         bool isGestating,
         bool isReady,
-        uint256 cooldownIndex,
         uint nextActionAt,
+        uint256 cooldownIndex,
         uint256 siringWithId,
         uint256 birthTime,
         uint256 matronId,
@@ -24,6 +24,11 @@ contract AvatarBreeding is AvatarFactory {
 
     AvatarInterface avatarContract;
 
+    modifier ownerOf(uint _avatarId) {
+        require(msg.sender == avatarToOwner[_avatarId]);
+        _;
+    }
+
     function setAvatarAddress(address _address) external {
         avatarContract = AvatarInterface(_address);
     }
@@ -36,12 +41,15 @@ contract AvatarBreeding is AvatarFactory {
        return (_avatar.readyTime <= now);
     }
 
-    function breedAndMultiply(uint _AvatarId, uint _targetDna, string memory _species) internal {
-        require(msg.sender == AvatarToOwner[_avatarId]);
+    uint breedFee = 0.9 ether; //live tokens; add travel tokens also
+
+    function breedAndMultiply(uint _AvatarId, uint _targetDna, string memory _species) internal ownerOf(_avatarId) payable {
+        require(msg.value == breedFee);
         Avatar storage myAvatar = avatars[_avatarId];
         require(_isReady(myAvatar));
         _targetDna = _targetAvatar % dnaModulus;
         uint newDna = (myAvatar.dna + _targetDna) / 2;
+        //avatar cross races?
         _createAvatar("NoName", newDna);
         _triggerCooldown(myAvatar);
     }
