@@ -7,7 +7,7 @@ Metaverse Inmersion.
 
 Web3.
 
-Real life goals instead of consumer behavior oriented.
+Real life goals instead of consumer behavior oriented. Real life traveling.
 
 Community building.
 
@@ -18,13 +18,13 @@ Efficient Consensus Mechanism based on actual blockchain capabilities and game n
 
 Consensus Mechanism: Proof of Work. If you stay on a fixed real place (Workplace) for several hours, your avatar will start to WORK, mining LIVE tokens. (Through glasses, smartwatch, notebook, and phone if possible, available and permissioned)
 
-When you TRAVEL, you will earn TRAVEL tokens. Additional proofs may be needed and posted public or private. (photos, videos, delta-time, non-VPN GPS validation, QR scans, etc)
+When you TRAVEL, you will earn TRAVEL tokens (through an internal dex/swap staking or liquidity providing system of your tokens while traveling). Additional proofs may be needed and posted public or private. (photos, videos, delta-time, non-VPN GPS validation, QR scans, etc)
 
-You can also mint pure AVATARS, or on the market you can trade AVATARS (NFT), PIECES (NFT) for LIVE & TRAVEL tokens respectively.
+You can also mint pure AVATARS, or on the market you can trade AVATARS (NFT), PIECES (NFT) for LIVE & TRAVEL tokens respectively. Also you can migrate your existing NFTs: CypherPunks, BoredApes, etc.
 
 You can BREED (mint) AVATARS (2 AVATARS -> a new AVATAR with mixed DNA) and MERGE (mint) PIECES (2 PIECES -> new PIECE with mixed characteristics) using LIVE & TRAVEL tokens which will be burnt.
 
-TRAVEL Tokens are inflationary and LIVE tokens are deflationary.
+TRAVEL Tokens are inflationary and LIVE tokens are deflationary. LIVE tokens are the governance token for community building.
 
 Through an achievement points system, leveling, stats and race, the AVATAR have special real-life abilities and different quests access. Similar applies for PIECES.
 

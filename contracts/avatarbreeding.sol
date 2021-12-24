@@ -1,62 +1,70 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "./avatarfactory.sol";
+import "./avatarmigration.sol";
 
-contract AvatarInterface{
-    function getAvatar(uint256 _id) external view returns (
-        //Examples of different qualities of the avatar/race that is going to be the couple to our avatar from: NFT collections, other Games, etc.
-        //Example: Qualities from Cryptokitties
-        bool isGestating,
-        bool isReady,
-        uint nextActionAt,
-        uint256 cooldownIndex,
-        uint256 siringWithId,
-        uint256 birthTime,
-        uint256 matronId,
-        uint256 sireId,
-        uint256 generation,
-        uint256 genes
-    );
-}
+contract AvatarBreeding is AvatarMigration {
 
-contract AvatarBreeding is AvatarFactory {
-
-    AvatarInterface avatarContract;
-
-    modifier ownerOf(uint _avatarId) {
+     uint breedProbability = 90;
+     uint maxBreed = 7;
+    modifier onlyOwnerOfAvatar(uint _avatarId) {
         require(msg.sender == avatarToOwner[_avatarId]);
         _;
     }
 
-    function setAvatarAddress(address _address) external {
-        avatarContract = AvatarInterface(_address);
-    }
-
-    function _triggerCooldown(Avatar storage _avatar) internal {
-        _avatar.readyTime = uint32(now + cooldownTime);
+    function _triggerCd(Avatar storage _avatar) internal {
+        _avatar.readyTime = uint32(now + avatarCdTime);
     }
 
     function _isReady(Avatar storage _avatar) internal view returns (bool) {
        return (_avatar.readyTime <= now);
     }
 
-    uint breedFee = 0.9 ether; //live tokens; add travel tokens also
+    uint breedFee = 1 ether; //live tokens
 
-    function breedAndMultiply(uint _AvatarId, uint _targetDna, string memory _species) internal ownerOf(_avatarId) payable {
-        require(msg.value == breedFee);
+    function breed(uint _avatarId, uint _targetAvatarId) internal onlyOwnerOfAvatar(_avatarId) onlyOwnerOfAvatar(_targetAvatarId) payable {
         Avatar storage myAvatar = avatars[_avatarId];
+        Avatar storage targetAvatar = avatars[_targetAvatarId];
         require(_isReady(myAvatar));
-        _targetDna = _targetAvatar % dnaModulus;
-        uint newDna = (myAvatar.dna + _targetDna) / 2;
-        //avatar cross races?
-        _createAvatar("NoName", newDna);
-        _triggerCooldown(myAvatar);
-    }
-
-    function breedOnAvatar(uint _avatarId, uint _AvatarId) public {
-        uint avatarDna;
-        (,,,,,,,,,avatarDna) = avatarContract.getAvatar(_AvatarId);
-        breedAndMultiply(_avatarId, avatarDna, _species);
+        require (_isReady(targetAvatar));
+        require(msg.value == breedFee);
+        uint newDna = (myAvatar.avatarDna + targetAvatar.avatarDna) / 2;
+        uint newRace;
+        if ((myAvatar.avatarRace == "cypherPunk" && targetAvatar.avatarRace == "traveler") || (myAvatar.avatarRace == "traveler" && targetAvatar.avatarRace == "cypherPunk")) {
+            newRace = "cypherTraveler";
+        }
+        if ((myAvatar.avatarRace == "kitty" && targetAvatar.avatarRace == "traveler") || (myAvatar.avatarRace == "traveler" && targetAvatar.avatarRace == "kitty")) {
+            newRace = "kittyTraveler";
+        }
+        if ((myAvatar.avatarRace == "boredApe" && targetAvatar.avatarRace == "traveler") || (myAvatar.avatarRace == "traveler" && targetAvatar.avatarRace == "boredApe")) {
+            newRace = "boredAvatar";
+        }
+        if ((myAvatar.avatarRace == "cypherPunk" && targetAvatar.avatarRace == "kitty") || (myAvatar.avatarRace == "kitty" && targetAvatar.avatarRace == "cypherPunk")) {
+            newRace = "cypherKitty";
+        }
+        if ((myAvatar.avatarRace == "cypherPunk" && targetAvatar.avatarRace == "boredApe") || (myAvatar.avatarRace == "boredApe" && targetAvatar.avatarRace == "cypherPunk")) {
+            newRace = "cypherApe";
+        }
+        if ((myAvatar.avatarRace == "kitty" && targetAvatar.avatarRace == "boredApe") || (myAvatar.avatarRace == "boredApe" && targetAvatar.avatarRace == "kitty")) {
+            newRace = "kitty";
+        }
+        if (myAvatar.avatarRace == "traveler" && targetAvatar.avatarRace == "traveler") {
+            newRace = "traveler";
+        }
+        else {
+            newRace = "newRaces";
+        }
+        uint rand = randMod(100);
+        if (rand <= breedProbability && myAvatar.breedCount <= maxBreed) {
+            _createAvatar("NoName", newRace, _randSex(), newDna);
+            _triggerCd(myAvatar);
+            _triggerCd(targetAvatar);
+            myAvatar.breedCount++;
+        } else if (rand <= breedProbability && myAvatar.breedCount <= maxBreed) {
+            _createAvatar("NoName", newRace, _randSex(), newDna);
+            _triggerCd(myAvatar);
+            _triggerCd(targetAvatar);
+            myAvatar.breedCount++;
+        }
     }
 }
