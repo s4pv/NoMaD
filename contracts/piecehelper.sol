@@ -3,27 +3,29 @@ pragma solidity >=0.4.22 <0.9.0;
 
 import "./piecemerging.sol";
 
-contract PieceHelper is PieceBreeding {
+contract PieceHelper is PieceMerging {
 
   modifier abovePieceLevel(uint _level, uint _pieceId) {
-    require(pieces[_pieceId].level >= _level);
+    require(pieces[_pieceId].pieceLevel >= _level);
     _;
   }
-  function withdrawPiece() external onlyOwnerOfPiece {
+  function withdrawPiece() external payable onlyOwner {
+    require(msg.value == withdrawPieceFee);
     address _owner = owner();
-    _owner.transfer(address(this).balance);
+    payable(_owner).transfer(address(this).balance);
   }
-  uint changeNameFee = 0.1 ether;
-  uint changeDnaFee = 10 ether;
+  uint changePieceNameFee = 0.1 ether;
+  uint changePieceDnaFee = 10 ether;
+  uint withdrawPieceFee = 0.01 ether;
 
   function changePieceName(uint _pieceId, string calldata _newName) external payable abovePieceLevel(2, _pieceId) onlyOwnerOfPiece(_pieceId) {
-    require(msg.value == changeNameFee);
-    pieces[_pieceId].name = _newName;
+    require(msg.value == changePieceNameFee);
+    pieces[_pieceId].pieceName = _newName;
   }
 
   function changePieceDna(uint _pieceId, uint _newDna) external payable abovePieceLevel(10, _pieceId) onlyOwnerOfPiece(_pieceId) {
-    require(msg.value == changeDnaFee);
-    pieces[_pieceId].dna = _newDna;
+    require(msg.value == changePieceDnaFee);
+    pieces[_pieceId].pieceDna = _newDna;
   }
 
   function getPiecesByOwner(address _owner) external view returns(uint[] memory) {

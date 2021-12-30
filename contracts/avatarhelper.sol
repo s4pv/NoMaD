@@ -6,24 +6,26 @@ import "./avatarbreeding.sol";
 contract AvatarHelper is AvatarBreeding {
 
   modifier aboveAvatarLevel(uint _level, uint _avatarId) {
-    require(avatars[_avatarId].level >= _level);
+    require(avatars[_avatarId].avatarLevel >= _level);
     _;
   }
-  function withdrawAvatar() external onlyOwnerOfAvatar {
+  function withdrawAvatar() external payable onlyOwner {
+    require(msg.value == withdrawAvatarFee);
     address _owner = owner();
-    _owner.transfer(address(this).balance);
+    payable(_owner).transfer(address(this).balance);
   }
-  uint changeNameFee = 0.1 ether;
-  uint changeDnaFee = 10 ether;
+  uint changeAvatarNameFee = 0.1 ether;
+  uint changeAvatarDnaFee = 10 ether;
+  uint withdrawAvatarFee = 0.01 ether;
 
   function changeAvatarName(uint _avatarId, string calldata _newName) external payable aboveAvatarLevel(2, _avatarId) onlyOwnerOfAvatar(_avatarId) {
-    require(msg.value == changeNameFee);
-    avatars[_avatarId].name = _newName;
+    require(msg.value == changeAvatarNameFee);
+    avatars[_avatarId].avatarName = _newName;
   }
 
   function changeAvatarDna(uint _avatarId, uint _newDna) external payable aboveAvatarLevel(10, _avatarId) onlyOwnerOfAvatar(_avatarId) {
-    require(msg.value == changeDnaFee);
-    avatars[_avatarId].dna = _newDna;
+    require(msg.value == changeAvatarDnaFee);
+    avatars[_avatarId].avatarDna = _newDna;
   }
 
   function getAvatarsByOwner(address _owner) external view returns(uint[] memory) {

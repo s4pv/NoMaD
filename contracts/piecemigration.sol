@@ -5,9 +5,9 @@ import "./piecefactory.sol";
 
 //Examples of mapping different qualities of the piece/class that is going to be the couple to our piece from: NFT collections, other Games, etc.
 //Example: Qualities from crypto kitties
-contract KittyInterface {
+abstract contract KittyInterface2 {
 
-    function getKitty(uint256 _id) external view returns (
+    function getKitty2(uint256 _id) external virtual view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,
@@ -21,9 +21,9 @@ contract KittyInterface {
     );
 }
 //modify
-contract CypherPunkInterface {
+abstract contract CypherPunkInterface2 {
 
-    function getCypherPunk(uint256 _id) external view returns (
+    function getCypherPunk2(uint256 _id) external virtual view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,
@@ -37,9 +37,9 @@ contract CypherPunkInterface {
     );
 }
 //modify
-contract BoredApeInterface {
+abstract contract BoredApeInterface2 {
 
-    function getBoredApe(uint256 _id) external view returns (
+    function getBoredApe2(uint256 _id) external virtual view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,
@@ -55,44 +55,47 @@ contract BoredApeInterface {
 
 contract PieceMigration is PieceFactory {
 
-     KittyInterface kittyContract;
-     CypherPunkInterface cypherPunkContract;
-     BoredApeInterface boredApeContract;
+     KittyInterface2 kittyContract2;
+     CypherPunkInterface2 cypherPunkContract2;
+     BoredApeInterface2 boredApeContract2;
 
-    function setKittyContractAddress(address _address) external onlyOwner {
-        kittyContract = KittyInterface(_address);
+    function setKittyContractAddress2(address _address) external onlyOwner {
+        kittyContract2 = KittyInterface2(_address);
     }
 
-    function setCypherPunkContractAddress(address _address) external onlyOwner {
-        cypherPunkContract = CypherPunkInterface(_address);
+    function setCypherPunkContractAddress2(address _address) external onlyOwner {
+        cypherPunkContract2 = CypherPunkInterface2(_address);
     }
 
-    function setBoredApeContractAddress(address _address) external onlyOwner {
-        boredApeContract = BoredApeInterface(_address);
+    function setBoredApeContractAddress2(address _address) external onlyOwner {
+        boredApeContract2 = BoredApeInterface2(_address);
     }
 
-    function migrateKitty(uint _kittyId) public {
-        string _class = "kitty";
-        string _sex = _randSex();
+    function migrateKitty2(uint _kittyId) public payable {
+        require(msg.value == pieceCreationFee);
+        bytes32 _class = keccak256(abi.encodePacked("kitty"));
+        string memory _sex = _randSex();
         uint _dna;
-        (,,,,,,,,,_dna) = kittyContract.getKitty(_kittyId);
-        _createPiece("NoName", _class, _sex, _dna);
+        (,,,,,,,,,_dna) = kittyContract2.getKitty2(_kittyId);
+        _createPiece(_class, _sex, _dna);
     }
 
-    function migrateBoredApe(uint _boredApeId) public {
-        string _class = "boredApe";
-        string _sex = _randSex();
+    function migrateBoredApe2(uint _boredApeId) public payable {
+        require(msg.value == pieceCreationFee);
+        bytes32 _class = keccak256(abi.encodePacked("boredApe"));
+        string memory _sex = _randSex();
         uint _dna;
-        (,,,,,,,,,_dna) = boredApeContract.getBoredApe(_boredApeId);
-        _createPiece("NoName", _class, _sex, _dna);
+        (,,,,,,,,,_dna) = boredApeContract2.getBoredApe2(_boredApeId);
+        _createPiece(_class, _sex, _dna);
     }
 
 
-    function migrateCypherPunk(uint _cypherPunkId) public {
-        string _class = "cypherPunk";
-        string _sex = _randSex();
+    function migrateCypherPunk2(uint _cypherPunkId) public payable {
+        require(msg.value == pieceCreationFee);
+        bytes32 _class = keccak256(abi.encodePacked("cypherPunk"));
+        string memory _sex = _randSex();
         uint _dna;
-        (,,,,,,,,,_dna) = cypherPunkContract.getCypherPunk(_cypherPunkId);
-        _createPiece("NoName", _class, _sex, _dna);
+        (,,,,,,,,,_dna) = cypherPunkContract2.getCypherPunk2(_cypherPunkId);
+        _createPiece(_class, _sex, _dna);
     }
 }

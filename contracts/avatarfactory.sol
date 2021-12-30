@@ -2,29 +2,33 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 import "./ownable.sol";
+import "./safemath.sol";
 
 contract AvatarFactory is Ownable {
 
-    event NewAvatar(uint avatarId, string avatarName, string avatarRace, string avatarSex, uint avatarDna, uint32 avatarReadyTime, uint8 avatarAge, uint8 avatarLevel,  uint8 avatarLuck, uint8 avatarInt, uint8 avatarAgi, uint8 avatarStr, uint8 avatarSta, uint8 avatarBreedCount);
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+    using SafeMath16 for uint16;
+
+    event NewAvatar(uint avatarId, uint avatarDna, string avatarName, string avatarSex, bytes32 avatarRace, uint32 avatarReadyTime, uint16 avatarLevel,  uint16 avatarLuck, uint16 avatarInt, uint16 avatarAgi, uint16 avatarStr, uint16 avatarSta, uint16 avatarBreedCount);
 
     uint avatarDnaDigits = 16;
     uint avatarDnaModulus = 10 ** avatarDnaDigits;
     uint avatarCdTime = 1 days;
 
     struct Avatar {
-        string avatarName;
-        string avatarRace;
-        string avatarSex;
-        uint32 avatarReadyTime;
         uint avatarDna;
-        uint8 avatarAge;
-        uint8 avatarLevel;
-        uint8 avatarLuck;
-        uint8 avatarIntellect;
-        uint8 avatarAgility;
-        uint8 avatarStrength;
-        uint8 avatarStamina;
-        uint8 breedCount;
+        string avatarName;
+        string avatarSex;
+        bytes32 avatarRace;
+        uint32 avatarReadyTime;
+        uint16 avatarLevel;
+        uint16 avatarLuck;
+        uint16 avatarIntellect;
+        uint16 avatarAgility;
+        uint16 avatarStrength;
+        uint16 avatarStamina;
+        uint16 breedCount;
     }
 
     Avatar[] public avatars;
@@ -37,12 +41,12 @@ contract AvatarFactory is Ownable {
 
     function randMod(uint _modulus) internal returns(uint) {
         randNonce++;
-        return uint(keccak256(abi.encodePacked(now,msg.sender,randNonce))) % _modulus;
+        return uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,randNonce))) % _modulus;
     }
 
-    function _randSex() internal returns(string) {
+    function _randSex() internal returns(string memory) {
         uint maleProbability = 50;
-        string _sex;
+        string memory _sex;
         if (randMod(100) <= maleProbability) {
             _sex = "male";
         } else {
@@ -51,21 +55,15 @@ contract AvatarFactory is Ownable {
         return (_sex);
     }
 
-    function _createAvatar(string memory _name, string _race, string _sex, uint _dna) internal payable {
-        require(msg.value == avatarCreationFee);
-        uint32 _readyTime = uint32(now + avatarCdTime);
-        uint8 _age = 1;
-        uint8 _lvl = 1;
-        uint8 _luk = 1;
-        uint8 _int = 1;
-        uint8 _agi = 1;
-        uint8 _str = 1;
-        uint8 _sta = 1;
-        uint8 _breedCount = 0;
-        uint avatarId = avatars.push(Avatar(_name, _race, _sex, _dna, _readyTime, _age, _lvl, _luk, _int, _agi, _str, _sta, _breedCount)) - 1;
+    function _createAvatar(bytes32 _race, string memory _sex, uint _dna) internal {
+        uint32 _readyTime = uint32(block.timestamp + avatarCdTime);
+        // Note: We chose not to prevent the year 2038 problem... So don't need
+        // worry about overflows on readyTime. Our app is screwed in 2038 anyway ;)
+        avatars.push(Avatar(_dna, "NoName", _sex, _race, _readyTime, 1, 1, 1, 1, 1, 1, 0));
+        uint avatarId = avatars.length -1;
         avatarToOwner[avatarId] = msg.sender;
-        ownerAvatarCount[msg.sender]++;
-        emit NewAvatar(avatarId, _name, _race, _sex, _dna, _readyTime, _age, _lvl, _luk, _int, _agi, _str, _sta, _breedCount);
+        ownerAvatarCount[msg.sender] = ownerAvatarCount[msg.sender].add(1);
+        emit NewAvatar(avatarId, _dna, "NoName", _sex, _race, _readyTime, 1, 1, 1, 1, 1, 1, 0);
     }
 
     function _generateRandomAvatarDna(string memory _str) private view returns (uint) {
@@ -73,11 +71,12 @@ contract AvatarFactory is Ownable {
         return rand % avatarDnaModulus;
     }
 
-    function createRandomAvatar(string memory _name, string _sex) public {
+    function createRandomAvatar(string memory _name, string memory _sex) public payable {
+        require(msg.value == avatarCreationFee);
         require(ownerAvatarCount[msg.sender] == 0);
-        string _race = "traveler";
+        bytes32 _race = keccak256(abi.encodePacked("traveler"));
         uint randDna = _generateRandomAvatarDna(_name);
         randDna = randDna - randDna % 100;
-        _createAvatar(_name, _race, _sex, randDna);
+        _createAvatar(_race, _sex, randDna);
     }
 }

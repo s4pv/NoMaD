@@ -2,29 +2,33 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 import "./ownable.sol";
+import "./safemath.sol";
 
 contract PieceFactory is Ownable {
 
-    event NewPiece(uint pieceId, string pieceName, string pieceClass, string pieceSex, uint pieceDna, uint32 pieceReadyTime, uint8 pieceAge, uint8 pieceLevel,  uint8 pieceLuck, uint8 pieceInt, uint8 pieceAgi, uint8 pieceStr, uint8 pieceSta, uint8 pieceMergeCount);
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+    using SafeMath16 for uint16;
+
+    event NewPiece(uint pieceId, uint pieceDna, string pieceName, string pieceSex, bytes32 pieceClass, uint32 pieceReadyTime, uint16 pieceLevel,  uint16 pieceLuck, uint16 pieceInt, uint16 pieceAgi, uint16 pieceStr, uint16 pieceSta, uint16 pieceMergeCount);
 
     uint pieceDnaDigits = 16;
     uint pieceDnaModulus = 10 ** pieceDnaDigits;
     uint pieceCdTime = 1 days;
 
     struct Piece {
-        string pieceName;
-        string pieceClass;
-        string pieceSex;
-        uint32 pieceReadyTime;
         uint pieceDna;
-        uint8 pieceAge;
-        uint8 pieceLevel;
-        uint8 pieceLuck;
-        uint8 pieceIntellect;
-        uint8 pieceAgility;
-        uint8 pieceStrength;
-        uint8 pieceStamina;
-        uint8 mergeCount;
+        string pieceName;
+        string pieceSex;
+        bytes32 pieceClass;
+        uint32 pieceReadyTime;
+        uint16 pieceLevel;
+        uint16 pieceLuck;
+        uint16 pieceIntellect;
+        uint16 pieceAgility;
+        uint16 pieceStrength;
+        uint16 pieceStamina;
+        uint16 mergeCount;
     }
 
     Piece[] public pieces;
@@ -37,12 +41,12 @@ contract PieceFactory is Ownable {
 
     function randMod(uint _modulus) internal returns(uint) {
         randNonce++;
-        return uint(keccak256(abi.encodePacked(now,msg.sender,randNonce))) % _modulus;
+        return uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,randNonce))) % _modulus;
     }
 
-    function _randSex() internal returns(string) {
+    function _randSex() internal returns(string memory) {
         uint maleProbability = 50;
-        string _sex;
+        string memory _sex;
         if (randMod(100) <= maleProbability) {
             _sex = "male";
         } else {
@@ -51,21 +55,15 @@ contract PieceFactory is Ownable {
         return (_sex);
     }
 
-    function _createPiece(string memory _name, string _class, string _sex, uint _dna) internal payable {
-        require(msg.value == pieceCreationFee);
-        uint32 _readyTime = uint32(now + pieceCdTime);
-        uint8 _age = 1;
-        uint8 _lvl = 1;
-        uint8 _luk = 1;
-        uint8 _int = 1;
-        uint8 _agi = 1;
-        uint8 _str = 1;
-        uint8 _sta = 1;
-        uint8 _mergeCount = 0;
-        uint pieceId = pieces.push(Piece(_name, _class, _sex, _dna, _readyTime, _age, _lvl, _luk, _int, _agi, _str, _sta, _mergeCount)) - 1;
+    function _createPiece(bytes32 _class, string memory _sex, uint _dna) internal {
+        uint32 _readyTime = uint32(block.timestamp + pieceCdTime);
+        // Note: We chose not to prevent the year 2038 problem... So don't need
+        // worry about overflows on readyTime. Our app is screwed in 2038 anyway ;)
+        pieces.push(Piece(_dna, "NoName", _sex, _class, _readyTime, 1, 1, 1, 1, 1, 1, 0));
+        uint pieceId = pieces.length -1;
         pieceToOwner[pieceId] = msg.sender;
-        ownerPieceCount[msg.sender]++;
-        emit NewPiece(pieceId, _name, _class, _sex, _dna, _readyTime, _age, _lvl, _luk, _int, _agi, _str, _sta, _mergeCount);
+        ownerPieceCount[msg.sender] = ownerPieceCount[msg.sender].add(1);
+        emit NewPiece(pieceId, _dna, "NoName", _sex, _class, _readyTime, 1, 1, 1, 1, 1, 1, 0);
     }
 
     function _generateRandomPieceDna(string memory _str) private view returns (uint) {
@@ -73,11 +71,12 @@ contract PieceFactory is Ownable {
         return rand % pieceDnaModulus;
     }
 
-    function createRandomPiece(string memory _name, string _sex) public {
+    function createRandomPiece(string memory _name, string memory _sex) public payable {
+        require(msg.value == pieceCreationFee);
         require(ownerPieceCount[msg.sender] == 0);
-        string _class = "traveler";
+        bytes32 _class = keccak256(abi.encodePacked("traveler"));
         uint randDna = _generateRandomPieceDna(_name);
         randDna = randDna - randDna % 100;
-        _createPiece(_name, _class, _sex, randDna);
+        _createPiece(_class, _sex, randDna);
     }
 }
