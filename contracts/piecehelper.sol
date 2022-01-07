@@ -5,27 +5,13 @@ import "./piecemerging.sol";
 
 contract PieceHelper is PieceMerging {
 
-  modifier abovePieceLevel(uint _level, uint _pieceId) {
-    require(pieces[_pieceId].pieceLevel >= _level);
-    _;
-  }
+  uint changePieceDnaFee = 10 ether;
+  uint withdrawPieceFee = 0.01 ether;
+
   function withdrawPiece() external payable onlyOwner {
     require(msg.value == withdrawPieceFee);
     address _owner = owner();
     payable(_owner).transfer(address(this).balance);
-  }
-  uint changePieceNameFee = 0.1 ether;
-  uint changePieceDnaFee = 10 ether;
-  uint withdrawPieceFee = 0.01 ether;
-
-  function changePieceName(uint _pieceId, string calldata _newName) external payable abovePieceLevel(2, _pieceId) onlyOwnerOfPiece(_pieceId) {
-    require(msg.value == changePieceNameFee);
-    pieces[_pieceId].pieceName = _newName;
-  }
-
-  function changePieceDna(uint _pieceId, uint _newDna) external payable abovePieceLevel(10, _pieceId) onlyOwnerOfPiece(_pieceId) {
-    require(msg.value == changePieceDnaFee);
-    pieces[_pieceId].pieceDna = _newDna;
   }
 
   function getPiecesByOwner(address _owner) external view returns(uint[] memory) {
@@ -40,4 +26,50 @@ contract PieceHelper is PieceMerging {
     return result;
   }
 
+  function createBlankShoes() external payable {
+     require(msg.value == pieceCreationFee);
+     createShoes();
+  }
+
+  function createBlankSocks() external payable {
+     require(msg.value == pieceCreationFee);
+     createSocks();
+  }
+
+  function createBlankPants() external payable {
+     require(msg.value == pieceCreationFee);
+     createPants();
+  }
+
+  function createBlankUnderwear() external payable {
+     require(msg.value == pieceCreationFee);
+     createPants();
+  }
+
+  function createBlankShirt() external payable {
+     require(msg.value == pieceCreationFee);
+     createShirt();
+  }
+
+  function createBlankHoodie() external payable {
+     require(msg.value == pieceCreationFee);
+     createHoodie();
+  }
+
+  function createBlankSnapback() external payable {
+     require(msg.value == pieceCreationFee);
+     createSnapback();
+  }
+
+  function createTravelGift(uint256 _ini_loc, uint256 _end_loc) external payable {
+     require(msg.value == pieceCreationFee);
+     uint rand = randMod(100);
+     if (rand < 50) {
+         createTravelPaint(_ini_loc, _end_loc);
+     } else if (rand < 75) {
+         createTravelItem(_ini_loc, _end_loc);
+     } else {
+         createTravelCoupon(_ini_loc, _end_loc);
+     }
+  }
 }

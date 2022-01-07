@@ -10,7 +10,7 @@ contract PieceFactory is Ownable {
     using SafeMath32 for uint32;
     using SafeMath16 for uint16;
 
-    event NewPiece(uint pieceId, uint pieceDna, string pieceName, string pieceSex, bytes32 pieceClass, uint32 pieceReadyTime, uint16 pieceLevel,  uint16 pieceLuck, uint16 pieceInt, uint16 pieceAgi, uint16 pieceStr, uint16 pieceSta, uint16 pieceMergeCount);
+    event NewPiece(uint pieceId, uint pieceDna, bytes32 pieceClass, uint32 pieceReadyTime, uint16 pieceLevel,  uint16 pieceLuck, uint16 pieceInt, uint16 pieceAgi, uint16 pieceStr, uint16 pieceSta, uint16 pieceMergeCount);
 
     uint pieceDnaDigits = 16;
     uint pieceDnaModulus = 10 ** pieceDnaDigits;
@@ -18,8 +18,6 @@ contract PieceFactory is Ownable {
 
     struct Piece {
         uint pieceDna;
-        string pieceName;
-        string pieceSex;
         bytes32 pieceClass;
         uint32 pieceReadyTime;
         uint16 pieceLevel;
@@ -36,34 +34,23 @@ contract PieceFactory is Ownable {
     mapping (uint => address) public pieceToOwner;
     mapping (address => uint) ownerPieceCount;
 
-    uint pieceCreationFee = 1 ether;
-    uint randNonce = 0;
+    uint pieceCreationFee = 0.1 ether;
+    uint randPieceNonce = 0;
 
     function randMod(uint _modulus) internal returns(uint) {
-        randNonce++;
-        return uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,randNonce))) % _modulus;
+        randPieceNonce++;
+        return uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,randPieceNonce))) % _modulus;
     }
 
-    function _randSex() internal returns(string memory) {
-        uint maleProbability = 50;
-        string memory _sex;
-        if (randMod(100) <= maleProbability) {
-            _sex = "male";
-        } else {
-            _sex = "female";
-        }
-        return (_sex);
-    }
-
-    function _createPiece(bytes32 _class, string memory _sex, uint _dna) internal {
+    function _createPiece(bytes32 _class, uint _dna) internal {
         uint32 _readyTime = uint32(block.timestamp + pieceCdTime);
         // Note: We chose not to prevent the year 2038 problem... So don't need
         // worry about overflows on readyTime. Our app is screwed in 2038 anyway ;)
-        pieces.push(Piece(_dna, "NoName", _sex, _class, _readyTime, 1, 1, 1, 1, 1, 1, 0));
+        pieces.push(Piece(_dna, _class, _readyTime, 1, 1, 1, 1, 1, 1, 0));
         uint pieceId = pieces.length -1;
         pieceToOwner[pieceId] = msg.sender;
         ownerPieceCount[msg.sender] = ownerPieceCount[msg.sender].add(1);
-        emit NewPiece(pieceId, _dna, "NoName", _sex, _class, _readyTime, 1, 1, 1, 1, 1, 1, 0);
+        emit NewPiece(pieceId, _dna, _class, _readyTime, 1, 1, 1, 1, 1, 1, 0);
     }
 
     function _generateRandomPieceDna(string memory _str) private view returns (uint) {
@@ -71,12 +58,75 @@ contract PieceFactory is Ownable {
         return rand % pieceDnaModulus;
     }
 
-    function createRandomPiece(string memory _name, string memory _sex) public payable {
-        require(msg.value == pieceCreationFee);
-        require(ownerPieceCount[msg.sender] == 0);
-        bytes32 _class = keccak256(abi.encodePacked("traveler"));
-        uint randDna = _generateRandomPieceDna(_name);
-        randDna = randDna - randDna % 100;
-        _createPiece(_class, _sex, randDna);
-    }
+  function createShoes() private {
+     bytes32 _class = keccak256(abi.encodePacked("Shoes"));
+     uint randDna = _generateRandomPieceDna("Blank Shoes");
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createSocks() private {
+     bytes32 _class = keccak256(abi.encodePacked("Socks"));
+     uint randDna = _generateRandomPieceDna("Blank Socks");
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+
+  function createPants() private {
+     bytes32 _class = keccak256(abi.encodePacked("Pants"));
+     uint randDna = _generateRandomPieceDna("Blank Pants");
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createUnderwear() private {
+     bytes32 _class = keccak256(abi.encodePacked("Underwear"));
+     uint randDna = _generateRandomPieceDna("Blank Underwear");
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createShirt() private {
+     bytes32 _class = keccak256(abi.encodePacked("Shirt"));
+     uint randDna = _generateRandomPieceDna("Blank Shirt");
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createHoodie() private {
+     bytes32 _class = keccak256(abi.encodePacked("Hoodie"));
+     uint randDna = _generateRandomPieceDna("Blank Hoodie");
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createSnapback() private {
+     bytes32 _class = keccak256(abi.encodePacked("Snapback"));
+     uint randDna = _generateRandomPieceDna("Blank Snapback");
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createTravelPaint(uint256 _ini_loc, uint256 _end_loc) private {
+     bytes32 _class = keccak256(abi.encodePacked("Travel Paint"));
+     uint randDna = _generateRandomPieceDna(string(abi.encodePacked(_ini_loc, _end_loc)));
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createTravelItem(uint256 _ini_loc, uint256 _end_loc) private {
+     bytes32 _class = keccak256(abi.encodePacked("Travel Item"));
+     uint randDna = _generateRandomPieceDna(string(abi.encodePacked(_ini_loc, _end_loc)));
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
+  function createTravelCoupon(uint256 _ini_loc, uint256 _end_loc) private {
+     bytes32 _class = keccak256(abi.encodePacked("Travel Coupon"));
+     uint randDna = _generateRandomPieceDna(string(abi.encodePacked(_ini_loc, _end_loc)));
+     randDna = randDna - randDna % 100;
+     _createPiece(_class, randDna);
+  }
+
 }

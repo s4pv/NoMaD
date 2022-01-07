@@ -72,7 +72,7 @@ contract AvatarBreeding is AvatarMigration {
             _triggerCd(myAvatar);
             _triggerCd(targetAvatar);
             myAvatar.breedCount = myAvatar.breedCount.add(1);
-        } else if (rand > breedProbability && myAvatar.breedCount <= maxBreed) {
+        } if (rand > breedProbability && myAvatar.breedCount <= maxBreed) {
             _triggerCd(myAvatar);
             _triggerCd(targetAvatar);
             myAvatar.breedCount = myAvatar.breedCount.add(1);

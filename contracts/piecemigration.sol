@@ -4,98 +4,191 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./piecefactory.sol";
 
 //Examples of mapping different qualities of the piece/class that is going to be the couple to our piece from: NFT collections, other Games, etc.
-//Example: Qualities from crypto kitties
-abstract contract KittyInterface2 {
+//Example: 10kTF
+abstract contract ShoesInterface {
 
-    function getKitty2(uint256 _id) external virtual view returns (
-        bool isGestating,
+    function getShoes(uint256 _id) external virtual view returns (
         bool isReady,
         uint256 cooldownIndex,
-        uint256 nextActionAt,
-        uint256 siringWithId,
-        uint256 birthTime,
-        uint256 matronId,
-        uint256 sireId,
-        uint256 generation,
-        uint256 genes
+        uint256 backGround,
+        uint256 collection,
+        uint256 item,
+        uint256 parentName,
+        uint256 year,
+        uint256 property
     );
 }
-//modify
-abstract contract CypherPunkInterface2 {
 
-    function getCypherPunk2(uint256 _id) external virtual view returns (
-        bool isGestating,
+abstract contract SocksInterface {
+
+    function getSocks(uint256 _id) external virtual view returns (
         bool isReady,
         uint256 cooldownIndex,
-        uint256 nextActionAt,
-        uint256 siringWithId,
-        uint256 birthTime,
-        uint256 matronId,
-        uint256 sireId,
-        uint256 generation,
-        uint256 genes
+        uint256 backGround,
+        uint256 collection,
+        uint256 item,
+        uint256 parentName,
+        uint256 year,
+        uint256 property
     );
 }
-//modify
-abstract contract BoredApeInterface2 {
 
-    function getBoredApe2(uint256 _id) external virtual view returns (
-        bool isGestating,
+abstract contract PantsInterface {
+
+    function getPants(uint256 _id) external virtual view returns (
         bool isReady,
         uint256 cooldownIndex,
-        uint256 nextActionAt,
-        uint256 siringWithId,
-        uint256 birthTime,
-        uint256 matronId,
-        uint256 sireId,
-        uint256 generation,
-        uint256 genes
+        uint256 backGround,
+        uint256 collection,
+        uint256 item,
+        uint256 parentName,
+        uint256 year,
+        uint256 property
+    );
+}
+
+abstract contract UnderwearInterface {
+
+    function getUnderwear(uint256 _id) external virtual view returns (
+        bool isReady,
+        uint256 cooldownIndex,
+        uint256 backGround,
+        uint256 collection,
+        uint256 item,
+        uint256 parentName,
+        uint256 year,
+        uint256 property
+    );
+}
+
+abstract contract ShirtInterface {
+
+    function getShirt(uint256 _id) external virtual view returns (
+        bool isReady,
+        uint256 cooldownIndex,
+        uint256 backGround,
+        uint256 collection,
+        uint256 item,
+        uint256 parentName,
+        uint256 year,
+        uint256 property
+    );
+}
+
+abstract contract HoodieInterface {
+
+    function getHoodie(uint256 _id) external virtual view returns (
+        bool isReady,
+        uint256 cooldownIndex,
+        uint256 backGround,
+        uint256 collection,
+        uint256 item,
+        uint256 parentName,
+        uint256 year,
+        uint256 property
+    );
+}
+
+abstract contract SnapbackInterface {
+
+    function getSnapback(uint256 _id) external virtual view returns (
+        bool isReady,
+        uint256 cooldownIndex,
+        uint256 backGround,
+        uint256 collection,
+        uint256 item,
+        uint256 parentName,
+        uint256 year,
+        uint256 property
     );
 }
 
 contract PieceMigration is PieceFactory {
 
-     KittyInterface2 kittyContract2;
-     CypherPunkInterface2 cypherPunkContract2;
-     BoredApeInterface2 boredApeContract2;
+     ShoesInterface ShoesContract;
+     SocksInterface SocksContract;
+     PantsInterface PantsContract;
+     UnderwearInterface UnderwearContract;
+     ShirtInterface ShirtContract;
+     HoodieInterface HoodieContract;
+     SnapbackInterface SnapbackContract;    
 
-    function setKittyContractAddress2(address _address) external onlyOwner {
-        kittyContract2 = KittyInterface2(_address);
+    function setShoesContractAddress(address _address) external onlyOwner {
+        ShoesContract = ShoesInterface(_address);
     }
-
-    function setCypherPunkContractAddress2(address _address) external onlyOwner {
-        cypherPunkContract2 = CypherPunkInterface2(_address);
+    
+    function setSocksContractAddress(address _address) external onlyOwner {
+        SocksContract = SocksInterface(_address);
     }
-
-    function setBoredApeContractAddress2(address _address) external onlyOwner {
-        boredApeContract2 = BoredApeInterface2(_address);
+    
+    function setPantsContractAddress(address _address) external onlyOwner {
+        PantsContract = PantsInterface(_address);
     }
-
-    function migrateKitty2(uint _kittyId) public payable {
+    
+    function setUnderwearContractAddress(address _address) external onlyOwner {
+        UnderwearContract = UnderwearInterface(_address);
+    }
+    
+    function setShirtContractAddress(address _address) external onlyOwner {
+        ShirtContract = ShirtInterface(_address);
+    }
+    
+    function setHoodieContractAddress(address _address) external onlyOwner {
+        HoodieContract = HoodieInterface(_address);
+    }
+    
+    function setSnapbackContractAddress(address _address) external onlyOwner {
+        SnapbackContract = SnapbackInterface(_address);
+    }
+    
+    function migrateShoesItem(uint _itemId) public payable {
         require(msg.value == pieceCreationFee);
-        bytes32 _class = keccak256(abi.encodePacked("kitty"));
-        string memory _sex = _randSex();
+        bytes32 _class = keccak256(abi.encodePacked("Shoes"));
         uint _dna;
-        (,,,,,,,,,_dna) = kittyContract2.getKitty2(_kittyId);
-        _createPiece(_class, _sex, _dna);
+        (,,,,,,,_dna) = ShoesContract.getShoes(_itemId);
+        _createPiece(_class, _dna);
     }
 
-    function migrateBoredApe2(uint _boredApeId) public payable {
+    function migrateSocksItem(uint _itemId) public payable {
         require(msg.value == pieceCreationFee);
-        bytes32 _class = keccak256(abi.encodePacked("boredApe"));
-        string memory _sex = _randSex();
+        bytes32 _class = keccak256(abi.encodePacked("Socks"));
         uint _dna;
-        (,,,,,,,,,_dna) = boredApeContract2.getBoredApe2(_boredApeId);
-        _createPiece(_class, _sex, _dna);
+        (,,,,,,,_dna) = SocksContract.getSocks(_itemId);
+        _createPiece(_class, _dna);
     }
 
-
-    function migrateCypherPunk2(uint _cypherPunkId) public payable {
+    function migratePantsItem(uint _itemId) public payable {
         require(msg.value == pieceCreationFee);
-        bytes32 _class = keccak256(abi.encodePacked("cypherPunk"));
-        string memory _sex = _randSex();
+        bytes32 _class = keccak256(abi.encodePacked("Pants"));
         uint _dna;
-        (,,,,,,,,,_dna) = cypherPunkContract2.getCypherPunk2(_cypherPunkId);
-        _createPiece(_class, _sex, _dna);
+        (,,,,,,,_dna) = PantsContract.getPants(_itemId);
+        _createPiece(_class, _dna);
     }
+
+    function migrateUnderwearItem(uint _itemId) public payable {
+        require(msg.value == pieceCreationFee);
+        bytes32 _class = keccak256(abi.encodePacked("Underwear"));
+        uint _dna;
+        (,,,,,,,_dna) = UnderwearContract.getUnderwear(_itemId);
+        _createPiece(_class, _dna);
+    }
+    
+    function migrateShirtItem(uint _itemId) public payable {
+        require(msg.value == pieceCreationFee);
+        bytes32 _class = keccak256(abi.encodePacked("Shirt"));
+        uint _dna;
+        (,,,,,,,_dna) = ShirtContract.getShirt(_itemId);
+        _createPiece(_class, _dna);
+    }
+
+    function migrateSnapbackItem(uint _itemId) public payable {
+        require(msg.value == pieceCreationFee);
+        bytes32 _class = keccak256(abi.encodePacked("Snapback"));
+        uint _dna;
+        (,,,,,,,_dna) = ShirtContract.getShirt(_itemId);
+        //(,,,,,,,_dna) = _generateRandomPieceDna(abi.encodePacked(SnapbackContract.getSnapback(_itemId), " Snapback"));
+        //_dna = _dna - _dna % 100;
+        _createPiece(_class, _dna);
+    }
+
 }

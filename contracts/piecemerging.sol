@@ -4,12 +4,13 @@ pragma solidity >=0.4.22 <0.9.0;
 import "./piecemigration.sol";
 import "./safemath.sol";
 
+
 contract PieceMerging is PieceMigration {
 
     using SafeMath16 for uint16;
 
-    uint mergeProbability = 90;
-    uint maxMerge = 7;
+    uint mergeProbability = 95;
+    uint maxMerge = 1;
     modifier onlyOwnerOfPiece(uint _pieceId) {
         require(msg.sender == pieceToOwner[_pieceId]);
         _;
@@ -23,7 +24,7 @@ contract PieceMerging is PieceMigration {
        return (_piece.pieceReadyTime <= block.timestamp);
     }
 
-    uint mergeFee = 1 ether; //live tokens
+    uint mergeFee = 0.01 ether; //live tokens
 
     function merge(uint _pieceId, uint _targetPieceId) external onlyOwnerOfPiece(_pieceId) onlyOwnerOfPiece(_targetPieceId) payable {
         Piece storage myPiece = pieces[_pieceId];
@@ -33,46 +34,36 @@ contract PieceMerging is PieceMigration {
         require(msg.value == mergeFee);
         uint newDna = (myPiece.pieceDna + targetPiece.pieceDna) / 2;
         bytes32 newClass;
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("traveler")))) || ((myPiece.pieceClass == keccak256(abi.encodePacked("traveler"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))))) {
-            newClass = keccak256(abi.encodePacked("cypherTraveler"));
+        if ((((myPiece.pieceClass == keccak256(abi.encodePacked("Shoes"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints",targetPiece.pieceClass))))) || (((myPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Shoes")))))) {
+            newClass = keccak256(abi.encodePacked("Painted Shoes"));
         }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("kitty"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("traveler")))) || ((myPiece.pieceClass == keccak256(abi.encodePacked("traveler"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("kitty"))))) {
-            newClass = keccak256(abi.encodePacked("kittyTraveler"));
+        if ((((myPiece.pieceClass == keccak256(abi.encodePacked("Socks"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints",targetPiece.pieceClass))))) || (((myPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Socks")))))) {
+            newClass = keccak256(abi.encodePacked("Painted Socks"));
         }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("boredApe"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("traveler")))) || ((myPiece.pieceClass == keccak256(abi.encodePacked("traveler"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("boredApe"))))) {
-            newClass = keccak256(abi.encodePacked("boredTraveler"));
+        if ((((myPiece.pieceClass == keccak256(abi.encodePacked("Pants"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints",targetPiece.pieceClass))))) || (((myPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Pants")))))) {
+            newClass = keccak256(abi.encodePacked("Painted Pants"));
+        }   
+        if ((((myPiece.pieceClass == keccak256(abi.encodePacked("Underwear"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints",targetPiece.pieceClass))))) || (((myPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Underwear")))))) {
+            newClass = keccak256(abi.encodePacked("Painted Underwear"));
         }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("kitty")))) || ((myPiece.pieceClass == keccak256(abi.encodePacked("kitty"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))))) {
-            newClass = keccak256(abi.encodePacked("cypherKitty"));
+        if ((((myPiece.pieceClass == keccak256(abi.encodePacked("Shirt"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints",targetPiece.pieceClass))))) || (((myPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Shirt")))))) {
+            newClass = keccak256(abi.encodePacked("Painted Shirt"));
         }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("boredApe")))) || ((myPiece.pieceClass == keccak256(abi.encodePacked("boredApe"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))))) {
-            newClass = keccak256(abi.encodePacked("cypherApe"));
+        if ((((myPiece.pieceClass == keccak256(abi.encodePacked("Hoodie"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints",targetPiece.pieceClass))))) || (((myPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Hoodie")))))) {
+            newClass = keccak256(abi.encodePacked("Painted Hoodie"));
         }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("kitty"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("boredApe")))) || ((myPiece.pieceClass == keccak256(abi.encodePacked("boredApe"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("kitty"))))) {
-            newClass = keccak256(abi.encodePacked("kitty"));
+        if ((((myPiece.pieceClass == keccak256(abi.encodePacked("Snapback"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints",targetPiece.pieceClass))))) || (((myPiece.pieceClass == keccak256(abi.encodePacked("Travel Paints"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("Snapback")))))) {
+            newClass = keccak256(abi.encodePacked("Painted Snapback"));
         }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("traveler"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("traveler"))))) {
-            newClass = keccak256(abi.encodePacked("traveler"));
-        }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("kitty"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("kitty"))))) {
-            newClass = keccak256(abi.encodePacked("kitty"));
-        }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("boredApe"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("boredApe"))))) {
-            newClass = keccak256(abi.encodePacked("boredApe"));
-        }
-        if (((myPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))) && (targetPiece.pieceClass == keccak256(abi.encodePacked("cypherPunk"))))) {
-            newClass = keccak256(abi.encodePacked("cypherPunk"));
-        }
-        else {
-            newClass = keccak256(abi.encodePacked("newClasses"));
-        }
+        //Complete posibilities
         uint rand = randMod(100);
         if (rand <= mergeProbability && myPiece.mergeCount <= maxMerge) {
-            _createPiece(newClass, _randSex(), newDna);
+            _createPiece(newClass, newDna);
             _triggerCd(myPiece);
             _triggerCd(targetPiece);
             myPiece.mergeCount = myPiece.mergeCount.add(1);
-        } else if (rand > mergeProbability && myPiece.mergeCount <= maxMerge) {
+            //burn old piece -> transfer to wallet without secret key
+        } if (rand > mergeProbability && myPiece.mergeCount <= maxMerge) {
             _triggerCd(myPiece);
             _triggerCd(targetPiece);
             myPiece.mergeCount = myPiece.mergeCount.add(1);

@@ -66,7 +66,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"}],\"name\":\"getCypherPunk\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isGestating\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isReady\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"cooldownIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nextActionAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"siringWithId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"birthTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"matronId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"sireId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"generation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"genes\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/avatarmigration.sol\":\"CypherPunkInterface\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/avatarfactory.sol\":{\"keccak256\":\"0x63e3e6c0ad6789e92a492be01f8e0b7fa64a9aac45cafa1d8b5a1207ad545f1d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d69b7c54475f71cbbc6038ed1d2b794edf6ed9ee7e1d9e9200e244e74da50753\",\"dweb:/ipfs/QmSb9taUgxnb6J4MrShmpNp4sQJ1kuSpJwiafFV7yhYHpk\"]},\"project:/contracts/avatarmigration.sol\":{\"keccak256\":\"0x5579f02742209b9605cc9757e282b1d082945222dc1f090123c4f350b4e7a7d6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fc4d0b3f49b1f2b5f3a920f4aca2b310afc920c9c8ee13ab09519ed519107764\",\"dweb:/ipfs/QmfHjmYJhMQgTEzzQrAwKkY3KPq9iLih3yiwN7Ur9feYm8\"]},\"project:/contracts/ownable.sol\":{\"keccak256\":\"0x921a0029e29732df5ce520f42593306abfb21b97c3e6dc5191b8675a2313727c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://122813b516d0559a700fed7f766eb4cec105c2c1d4c1726f7bba3ad9678b671f\",\"dweb:/ipfs/QmeZ3rcAttVBLY92T73ct8kZjmSYokm6aEFkZArFXYaiai\"]},\"project:/contracts/safemath.sol\":{\"keccak256\":\"0x710bf87666f414e9899319130f6331092cc1e08cf97b359c55f848e903613689\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8986f1bee659c18dc16faaee52c058c2d877108c5148c912b318aa2583106eaa\",\"dweb:/ipfs/QmTgbxCoRVGCJpqM29pTbbBGUNQQYNFuYw8NnS9YM2WD2t\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"}],\"name\":\"getCypherPunk\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isGestating\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isReady\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"cooldownIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nextActionAt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"siringWithId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"birthTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"matronId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"sireId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"generation\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"genes\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/avatarmigration.sol\":\"CypherPunkInterface\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/avatarfactory.sol\":{\"keccak256\":\"0x6ad15870583d6ade3f09c89cca53d9ac1f064f3c8cd2054f70a71367e92c0053\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://448f8a820ccadd38433ed8932d5c986038dbd62b8e130854dbc4bd1653a363ee\",\"dweb:/ipfs/QmY4hKbknyxQiG9MnxNnaLSTaVgTMsM5kQ7t6TjwLrDeo1\"]},\"project:/contracts/avatarmigration.sol\":{\"keccak256\":\"0x5579f02742209b9605cc9757e282b1d082945222dc1f090123c4f350b4e7a7d6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://fc4d0b3f49b1f2b5f3a920f4aca2b310afc920c9c8ee13ab09519ed519107764\",\"dweb:/ipfs/QmfHjmYJhMQgTEzzQrAwKkY3KPq9iLih3yiwN7Ur9feYm8\"]},\"project:/contracts/ownable.sol\":{\"keccak256\":\"0x921a0029e29732df5ce520f42593306abfb21b97c3e6dc5191b8675a2313727c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://122813b516d0559a700fed7f766eb4cec105c2c1d4c1726f7bba3ad9678b671f\",\"dweb:/ipfs/QmeZ3rcAttVBLY92T73ct8kZjmSYokm6aEFkZArFXYaiai\"]},\"project:/contracts/safemath.sol\":{\"keccak256\":\"0x710bf87666f414e9899319130f6331092cc1e08cf97b359c55f848e903613689\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8986f1bee659c18dc16faaee52c058c2d877108c5148c912b318aa2583106eaa\",\"dweb:/ipfs/QmTgbxCoRVGCJpqM29pTbbBGUNQQYNFuYw8NnS9YM2WD2t\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -95,16 +95,16 @@
         1198
       ],
       "Ownable": [
-        1824
+        1778
       ],
       "SafeMath": [
-        3511
+        3530
       ],
       "SafeMath16": [
-        3705
+        3724
       ],
       "SafeMath32": [
-        3608
+        3627
       ]
     },
     "id": 1437,
@@ -1199,7 +1199,7 @@
         "linearizedBaseContracts": [
           1436,
           992,
-          1824
+          1778
         ],
         "name": "AvatarMigration",
         "nameLocation": "1518:15:3",
@@ -1406,7 +1406,7 @@
                   "id": 1265,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1755,
+                  "referencedDeclaration": 1709,
                   "src": "1746:9:3"
                 },
                 "nodeType": "ModifierInvocation",
@@ -1562,7 +1562,7 @@
                   "id": 1279,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1755,
+                  "referencedDeclaration": 1709,
                   "src": "1888:9:3"
                 },
                 "nodeType": "ModifierInvocation",
@@ -1718,7 +1718,7 @@
                   "id": 1293,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1755,
+                  "referencedDeclaration": 1709,
                   "src": "2038:9:3"
                 },
                 "nodeType": "ModifierInvocation",
@@ -3629,16 +3629,16 @@
         1198
       ],
       "Ownable": [
-        1824
+        1778
       ],
       "SafeMath": [
-        3511
+        3530
       ],
       "SafeMath16": [
-        3705
+        3724
       ],
       "SafeMath32": [
-        3608
+        3627
       ]
     },
     "id": 1437,
@@ -4733,7 +4733,7 @@
         "linearizedBaseContracts": [
           1436,
           992,
-          1824
+          1778
         ],
         "name": "AvatarMigration",
         "nameLocation": "1518:15:3",
@@ -4940,7 +4940,7 @@
                   "id": 1265,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1755,
+                  "referencedDeclaration": 1709,
                   "src": "1746:9:3"
                 },
                 "nodeType": "ModifierInvocation",
@@ -5096,7 +5096,7 @@
                   "id": 1279,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1755,
+                  "referencedDeclaration": 1709,
                   "src": "1888:9:3"
                 },
                 "nodeType": "ModifierInvocation",
@@ -5252,7 +5252,7 @@
                   "id": 1293,
                   "name": "onlyOwner",
                   "nodeType": "IdentifierPath",
-                  "referencedDeclaration": 1755,
+                  "referencedDeclaration": 1709,
                   "src": "2038:9:3"
                 },
                 "nodeType": "ModifierInvocation",
@@ -7150,7 +7150,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2021-12-30T16:56:21.392Z",
+  "updatedAt": "2022-01-01T19:27:48.413Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
