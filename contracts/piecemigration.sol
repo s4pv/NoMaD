@@ -5,6 +5,7 @@ import "./piecefactory.sol";
 
 //Examples of mapping different qualities of the piece/class that is going to be the couple to our piece from: NFT collections, other Games, etc.
 //Example: 10kTF
+
 abstract contract ShoesInterface {
 
     function getShoes(uint256 _id) external virtual view returns (
@@ -105,6 +106,8 @@ abstract contract SnapbackInterface {
 
 contract PieceMigration is PieceFactory {
 
+     uint createPieceFee = 1 ether;
+
      ShoesInterface ShoesContract;
      SocksInterface SocksContract;
      PantsInterface PantsContract;
@@ -141,54 +144,54 @@ contract PieceMigration is PieceFactory {
         SnapbackContract = SnapbackInterface(_address);
     }
     
-    function migrateShoesItem(uint _itemId) public payable {
-        require(msg.value == pieceCreationFee);
+    function migrateShoesItem(uint _itemId, uint256 _curr_loc) public payable {
+        require(msg.value == createPieceFee);
         bytes32 _class = keccak256(abi.encodePacked("Shoes"));
         uint _dna;
         (,,,,,,,_dna) = ShoesContract.getShoes(_itemId);
-        _createPiece(_class, _dna);
+        _createPiece(_class, _dna, _curr_loc);
     }
 
-    function migrateSocksItem(uint _itemId) public payable {
-        require(msg.value == pieceCreationFee);
+    function migrateSocksItem(uint _itemId, uint256 _curr_loc) public payable {
+        require(msg.value == createPieceFee);
         bytes32 _class = keccak256(abi.encodePacked("Socks"));
         uint _dna;
         (,,,,,,,_dna) = SocksContract.getSocks(_itemId);
-        _createPiece(_class, _dna);
+        _createPiece(_class, _dna, _curr_loc);
     }
 
-    function migratePantsItem(uint _itemId) public payable {
-        require(msg.value == pieceCreationFee);
+    function migratePantsItem(uint _itemId, uint256 _curr_loc) public payable {
+        require(msg.value == createPieceFee);
         bytes32 _class = keccak256(abi.encodePacked("Pants"));
         uint _dna;
         (,,,,,,,_dna) = PantsContract.getPants(_itemId);
-        _createPiece(_class, _dna);
+        _createPiece(_class, _dna, _curr_loc);
     }
 
-    function migrateUnderwearItem(uint _itemId) public payable {
-        require(msg.value == pieceCreationFee);
+    function migrateUnderwearItem(uint _itemId, uint256 _curr_loc) public payable {
+        require(msg.value == createPieceFee);
         bytes32 _class = keccak256(abi.encodePacked("Underwear"));
         uint _dna;
         (,,,,,,,_dna) = UnderwearContract.getUnderwear(_itemId);
-        _createPiece(_class, _dna);
+        _createPiece(_class, _dna, _curr_loc);
     }
     
-    function migrateShirtItem(uint _itemId) public payable {
-        require(msg.value == pieceCreationFee);
+    function migrateShirtItem(uint _itemId, uint256 _curr_loc) public payable {
+        require(msg.value == createPieceFee);
         bytes32 _class = keccak256(abi.encodePacked("Shirt"));
         uint _dna;
         (,,,,,,,_dna) = ShirtContract.getShirt(_itemId);
-        _createPiece(_class, _dna);
+        _createPiece(_class, _dna, _curr_loc);
     }
 
-    function migrateSnapbackItem(uint _itemId) public payable {
-        require(msg.value == pieceCreationFee);
+    function migrateSnapbackItem(uint _itemId, uint256 _curr_loc) public payable {
+        require(msg.value == createPieceFee);
         bytes32 _class = keccak256(abi.encodePacked("Snapback"));
         uint _dna;
         (,,,,,,,_dna) = ShirtContract.getShirt(_itemId);
         //(,,,,,,,_dna) = _generateRandomPieceDna(abi.encodePacked(SnapbackContract.getSnapback(_itemId), " Snapback"));
         //_dna = _dna - _dna % 100;
-        _createPiece(_class, _dna);
+        _createPiece(_class, _dna, _curr_loc);
     }
 
 }

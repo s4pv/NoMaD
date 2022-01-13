@@ -24,9 +24,9 @@ contract PieceMerging is PieceMigration {
        return (_piece.pieceReadyTime <= block.timestamp);
     }
 
-    uint mergeFee = 0.01 ether; //live tokens
+    uint mergeFee = 0.1 ether; //live tokens
 
-    function merge(uint _pieceId, uint _targetPieceId) external onlyOwnerOfPiece(_pieceId) onlyOwnerOfPiece(_targetPieceId) payable {
+    function merge(uint _pieceId, uint _targetPieceId, uint256 _curr_loc) public onlyOwnerOfPiece(_pieceId) onlyOwnerOfPiece(_targetPieceId) payable {
         Piece storage myPiece = pieces[_pieceId];
         Piece storage targetPiece = pieces[_targetPieceId];
         require(_isReady(myPiece));
@@ -56,9 +56,9 @@ contract PieceMerging is PieceMigration {
             newClass = keccak256(abi.encodePacked("Painted Snapback"));
         }
         //Complete posibilities
-        uint rand = randMod(100);
+        uint rand = randPieceMod(100);
         if (rand <= mergeProbability && myPiece.mergeCount <= maxMerge) {
-            _createPiece(newClass, newDna);
+            _createPiece(newClass, newDna, _curr_loc);
             _triggerCd(myPiece);
             _triggerCd(targetPiece);
             myPiece.mergeCount = myPiece.mergeCount.add(1);
@@ -66,7 +66,6 @@ contract PieceMerging is PieceMigration {
         } if (rand > mergeProbability && myPiece.mergeCount <= maxMerge) {
             _triggerCd(myPiece);
             _triggerCd(targetPiece);
-            myPiece.mergeCount = myPiece.mergeCount.add(1);
         }
     }
 }

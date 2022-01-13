@@ -22,9 +22,9 @@ contract AvatarFactory is Ownable {
         string avatarSex;
         bytes32 avatarRace;
         uint32 avatarReadyTime;
-        uint16 avatarMiles;
-        uint16 avatarHome;
-        uint16 avatarWorkPlace;
+        uint256 avatarMiles;
+        uint256 avatarHome;
+        uint256 avatarWorkPlace;
         uint16 breedCount;
     }
 
@@ -33,10 +33,10 @@ contract AvatarFactory is Ownable {
     mapping (uint => address) public avatarToOwner;
     mapping (address => uint) ownerAvatarCount;
 
-    uint avatarCreationFee = 1 ether;
+    uint avatarCreationFee = 0.1 ether;
     uint randAvatarNonce = 0;
 
-    function randMod(uint _modulus) internal returns(uint) {
+    function randAvatarMod(uint _modulus) internal returns(uint) {
         randAvatarNonce++;
         return uint(keccak256(abi.encodePacked(block.timestamp,msg.sender,randAvatarNonce))) % _modulus;
     }
@@ -44,7 +44,7 @@ contract AvatarFactory is Ownable {
     function _randSex() internal returns(string memory) {
         uint maleProbability = 50;
         string memory _sex;
-        if (randMod(100) <= maleProbability) {
+        if (randAvatarMod(100) <= maleProbability) {
             _sex = "male";
         } else {
             _sex = "female";
@@ -56,11 +56,11 @@ contract AvatarFactory is Ownable {
         uint32 _readyTime = uint32(block.timestamp + avatarCdTime);
         // Note: We chose not to prevent the year 2038 problem... So don't need
         // worry about overflows on readyTime. Our app is screwed in 2038 anyway ;)
-        avatars.push(Avatar(_dna, "NoName", _sex, _race, _readyTime, 1, 0, 0, 0, 0));
+        avatars.push(Avatar(_dna, "NoName", _sex, _race, _readyTime, 0, 0, 0, 0));
         uint avatarId = avatars.length -1;
         avatarToOwner[avatarId] = msg.sender;
         ownerAvatarCount[msg.sender] = ownerAvatarCount[msg.sender].add(1);
-        emit NewAvatar(avatarId, _dna, "NoName", _sex, _race, _readyTime, 1, 0, 0, 0, 0);
+        emit NewAvatar(avatarId, _dna, "NoName", _sex, _race, _readyTime, 0, 0, 0, 0);
     }
 
     function _generateRandomAvatarDna(string memory _str) private view returns (uint) {
@@ -68,11 +68,11 @@ contract AvatarFactory is Ownable {
         return rand % avatarDnaModulus;
     }
 
-    function createRandomAvatar(string memory _name, string memory _sex) public payable {
+    function createRandomAvatar(string memory _sex) public payable {
         require(msg.value == avatarCreationFee);
         require(ownerAvatarCount[msg.sender] == 0);
         bytes32 _race = keccak256(abi.encodePacked("traveler"));
-        uint randDna = _generateRandomAvatarDna(_name);
+        uint randDna = _generateRandomAvatarDna("traveler");
         randDna = randDna - randDna % 100;
         _createAvatar(_race, _sex, randDna);
     }

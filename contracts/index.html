@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>LiveAndTravel front-end</title>
+        <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+        <script language="javascript" type="text/javascript" src="LiveAndTravel_abi.js"></script>
+    </head>
+    <body>
+    <div id="txStatus"></div>
+    <div id="avatars"></div>
+
+    <script>
+      var avatars;
+      var pieces;
+      var userAccount;
+
+      function startApp() {
+        var cryptoAvatarAddress = "YOUR_CONTRACT_ADDRESS";
+        var cryptoPieceAddress = "YOUR_CONTRACT_ADDRESS";
+        cryptoAvatars = new web3js.eth.Contract(cryptoAvatarsABI, cryptoAvatarsAddress);
+        cryptoPieces = new web3js.eth.Contract(cryptoPiecesABI, cryptoPiecesAddress);
+
+        var accountInterval = setInterval(function() {
+          // Check if account has changed
+          if (web3.eth.accounts[0] !== userAccount) {
+            userAccount = web3.eth.accounts[0];
+            // Call a function to update the UI with the new account
+            getAvatarsByOwner(userAccount)
+            .then(displayAvatars);
+            getPiecesByOwner(userAccount)
+            .then(displayPieces);
+          }
+        }, 100);
+
+        // Start here
+      }
+
+      function displayAvatars(ids) {
+        $("#avatars").empty();
+        for (id of ids) {
+          // Look up avatar details from our contract. Returns an `avatar` object
+          getAvatarDetails(id)
+          .then(function(avatar) {
+            // Using ES6's "template literals" to inject variables into the HTML.
+            // Append each one to our #avatar div
+            $("#avatar").append(`<div class="avatar">
+              <ul>
+                <li>Name: ${avatar.avatarName}</li>
+                <li>DNA: ${avatar.avatarDna}</li>
+                <li>Sex: ${avatar.avatarSex}</li>
+                <li>Race: ${avatar.avatarRace}</li>
+                <li>Ready Time: ${avatar.avatarReadyTime}</li>
+                <li>Miles Traveled: ${avatar.avatarMiles}</li>
+                <li>Home Place: ${avatar.avatarHome}</li>
+                <li>Work Place: ${avatar.avatarWorkPlace}</li>
+                <li>Breed Count: ${avatar.breedCount}</li>
+              </ul>
+            </div>`);
+          });
+        }
+      }
+
+        cryptoAvatars.events.Transfer({ filter: { _to: userAccount } })
+        .on("data", function(event) {
+          let data = event.returnValues;
+          getAvatarsByOwner(userAccount).then(displayAvatars);
+        }).on("error", console.error);
+      }
+
+        cryptoPieces.events.Transfer({ filter: { _to: userAccount } })
+        .on("data", function(event) {
+          let data = event.returnValues;
+          getPiecesByOwner(userAccount).then(displayPieces);
+        }).on("error", console.error);
+      }
+
+      function displayPieces(ids) {
+        $("#pieces").empty();
+        for (id of ids) {
+          // Look up piece details from our contract. Returns an `piece` object
+          getPieceDetails(id)
+          .then(function(piece) {
+            // Using ES6's "template literals" to inject variables into the HTML.
+            // Append each one to our #piece div
+            $("#piece").append(`<div class="piece">
+              <ul>
+                <li>DNA: ${piece.pieceDna}</li>
+                <li>Class: ${piece.pieceClass}</li>
+                <li>Ready Time: ${piece.pieceReadyTime}</li>
+                <li>Creation Location: ${piece.pieceCreationLoc}</li>
+                <li>Merge Count: ${piece.mergeCount}</li>
+              </ul>
+            </div>`);
+          });
+        }
+      }
+
+      function createRandomAvatar(sex) {
+        // This is going to take a while, so update the UI to let the user know
+        // the transaction has been sent
+        $("#txStatus").text("Creating new avatar on the blockchain. This may take a while...");
+        // Send the tx to our contract:
+        return cryptoAvatars.methods.createRandomAvatar(sex)
+        .send({ from: userAccount, value: web3.utils.toWei("0.1", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Successfully created a new avatar!");
+          // Transaction was accepted into the blockchain, let's redraw the UI
+          getAvatarsByOwner(userAccount).then(displayAvatars);
+        })
+        .on("error", function(error) {
+          // Do something to alert the user their transaction has failed
+          $("#txStatus").text("Error " + error + ". Try again.");
+        });
+      }
+
+      function breed(avatarId, targetAvatarId) {
+        $("#txStatus").text("Breeding a new Avatar!. This may take a while...");
+        return cryptoAvatars.methods.breed(avatarId, targetAvatarId)
+        .send({ from: userAccount, value: web3.utils.toWei("0.3", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Breeding succeeded. a new Avatar!");
+          getAvatarsByOwner(userAccount).then(displayAvatars);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function merge(pieceId, targetPieceId) {
+        $("#txStatus").text("Merging a new Piece!. This may take a while...");
+        return cryptoPieces.methods.merge(pieceId, targetPieceId)
+        .send({ from: userAccount, value: web3.utils.toWei("0.1", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Merging succeeded. a new Piece!");
+          getPiecesByOwner(userAccount).then(displayPieces);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function migrateKitty(kittyId) {
+        $("#txStatus").text("Migrating a new Avatar!. This may take a while... meow!");
+        return cryptoAvatars.methods.migrateKitty(kittyId)
+        .send({ from: userAccount, value: web3.utils.toWei("1", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Meowgration succeeded. a new kitty between your avatars!");
+          getAvatarsByOwner(userAccount).then(displayAvatars);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function migrateBoredApe(boredApeId) {
+        $("#txStatus").text("Migrating a new Avatar!. This may take a while... meh!");
+        return cryptoAvatars.methods.migrateBoredApe(boredApeId)
+        .send({ from: userAccount, value: web3.utils.toWei("1", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Boredgration succeeded. a new Ape between your avatars!");
+          getAvatarsByOwner(userAccount).then(displayAvatars);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function migrateCypherPunk(cypherPunkId) {
+        $("#txStatus").text("Migrating a new Avatar!. This may take a while... 011010!");
+        return cryptoAvatars.methods.migrateCypherPunk(cypherPunkId)
+        .send({ from: userAccount, value: web3.utils.toWei("1", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Migration succeeded. a new Cyph3rPvNk! between your avatars!");
+          getAvatarsByOwner(userAccount).then(displayAvatars);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function migrateShoesItem(itemId, currentLocation) {
+        $("#txStatus").text("Migrating a new piece!. This may take a while...");
+        return cryptoPieces.methods.migrateShoeItem(itemId, currentLocation)
+        .send({ from: userAccount, value: web3.utils.toWei("1", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Migration succeeded. a new shoe between your pieces!");
+          getPiecesByOwner(userAccount).then(displayPieces);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function changeAvatarName(avatarId, newName) {
+        $("#txStatus").text("Changing up your avatar name... to: "+ newName);
+        return cryptoAvatars.methods.changeAvatarName(avatarId, newName)
+        .send({ from: userAccount, value: web3.utils.toWei("0.01", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great! Your avatar name is: "+ newName);
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function changeAvatarDna(avatarId, newDNA) {
+        $("#txStatus").text("Changing up your avatar DNA in the lab... this will take time...");
+        return cryptoAvatars.methods.changeAvatarDna(avatarId, newDNA)
+        .send({ from: userAccount, value: web3.utils.toWei("10", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great! Your avatar DNA changed for good!");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function changePieceDna(pieceId, newDNA) {
+        $("#txStatus").text("Modifying your piece DNA with the engineers... this will take time...");
+        return cryptoPieces.methods.changePieceDna(pieceId, newDNA)
+        .send({ from: userAccount, value: web3.utils.toWei("10", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great! Your piece DNA changed for good!");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function setHomeQuest(current_location, avatarId) {
+        $("#txStatus").text("Modifying your home place to your current location :). This will take time...");
+        return cryptoAvatars.methods.setHomeQuest(current_location, avatarId)
+        .send({ from: userAccount, value: web3.utils.toWei("0.03", "ether") }) //will be fixed because of the IF
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great! Your Home Place changed to your current location.");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function setWorkPlaceQuest(current_location, avatarId) {
+        $("#txStatus").text("Modifying your work place to your current location :). Working on it...");
+        return cryptoAvatars.methods.setWorkPlaceQuest(current_location, avatarId)
+        .send({ from: userAccount, value: web3.utils.toWei("0.06", "ether") }) //will be fixed because of the IF
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great! Your Work Place changed to your current location.");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function workTravelQuest(current_location, avatarId) {
+        $("#txStatus").text("So you're arriving at your work. Let me check it...");
+        return cryptoAvatars.methods.workTravelQuest(current_location, avatarId)
+        .send({ from: userAccount, value: web3.utils.toWei("0.02", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great!. Have a nice day at work :)");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function TravelQuest(current_location, last_location, avatarId) {
+        $("#txStatus").text("So you're arriving at your travel destination!. Let me check it...");
+        return cryptoAvatars.methods.travelQuest(current_location, avatarId)
+        .send({ from: userAccount, value: web3.utils.toWei("0.02", "ether") })
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great!. Have a nice day!!");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function WorkQuest(current_location, avatarId) {
+        $("#txStatus").text("So you're working... Lets mine!!");
+        return cryptoAvatars.methods.travelQuest(current_location, avatarId)
+        .send({ from: userAccount})
+        .on("receipt", function(receipt) {
+          $("#txStatus").text("Great!. Here are your rewards!!");
+        })
+        .on("error", function(error) {
+          $("#txStatus").text(error);
+        });
+      }
+
+      function getAvatarsDetails(id) {
+        return cryptoAvatars.methods.avatars(id).call()
+      }
+
+      function avatarToOwner(id) {
+        return cryptoAvatars.methods.avatarToOwner(id).call()
+      }
+
+      function getAvatarsByOwner(owner) {
+        return cryptoAvatar.methods.getAvatarsByOwner(owner).call()
+      }
+
+      function getPiecesDetails(id) {
+        return cryptoPieces.methods.avatars(id).call()
+      }
+
+      function pieceToOwner(id) {
+        return cryptoPieces.methods.pieceToOwner(id).call()
+      }
+
+      function getPiecesByOwner(owner) {
+        return cryptoPiece.methods.getPiecesByOwner(owner).call()
+      }
+
+      window.addEventListener('load', function() {
+
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        if (typeof web3 !== 'undefined') {
+          // Use Mist/MetaMask's provider
+          web3js = new Web3(web3.currentProvider);
+        } else {
+          // Handle the case where the user doesn't have Metamask installed
+          // Probably show them a message prompting them to install Metamask
+        }
+
+        // Now you can start your app & access web3 freely:
+        startApp()
+
+      })
+    </script>
+  </body>
+</html>

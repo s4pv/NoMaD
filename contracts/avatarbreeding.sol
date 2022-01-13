@@ -23,9 +23,9 @@ contract AvatarBreeding is AvatarMigration {
        return (_avatar.avatarReadyTime <= block.timestamp);
     }
 
-    uint breedFee = 1 ether; //live tokens
+    uint breedFee = 0.3 ether; //live tokens
 
-    function breed(uint _avatarId, uint _targetAvatarId) external onlyOwnerOfAvatar(_avatarId) onlyOwnerOfAvatar(_targetAvatarId) payable {
+    function breed(uint _avatarId, uint _targetAvatarId) public onlyOwnerOfAvatar(_avatarId) onlyOwnerOfAvatar(_targetAvatarId) payable {
         Avatar storage myAvatar = avatars[_avatarId];
         Avatar storage targetAvatar = avatars[_targetAvatarId];
         require(_isReady(myAvatar));
@@ -66,7 +66,7 @@ contract AvatarBreeding is AvatarMigration {
         else {
             newRace = keccak256(abi.encodePacked("newRaces"));
         }
-        uint rand = randMod(100);
+        uint rand = randAvatarMod(100);
         if (rand <= breedProbability && myAvatar.breedCount <= maxBreed) {
             _createAvatar(newRace, _randSex(), newDna);
             _triggerCd(myAvatar);
