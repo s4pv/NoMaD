@@ -6,9 +6,9 @@ import "./piecefactory.sol";
 //Examples of mapping different qualities of the piece/class that is going to be the couple to our piece from: NFT collections, other Games, etc.
 //Example: 10kTF
 
-abstract contract ShoesInterface {
+contract ShoesInterface {
 
-    function getShoes(uint256 _id) external virtual view returns (
+    function getShoes(uint256 _id) external view returns (
         bool isReady,
         uint256 cooldownIndex,
         uint256 backGround,
@@ -20,9 +20,9 @@ abstract contract ShoesInterface {
     );
 }
 
-abstract contract SocksInterface {
+contract SocksInterface {
 
-    function getSocks(uint256 _id) external virtual view returns (
+    function getSocks(uint256 _id) external view returns (
         bool isReady,
         uint256 cooldownIndex,
         uint256 backGround,
@@ -34,9 +34,9 @@ abstract contract SocksInterface {
     );
 }
 
-abstract contract PantsInterface {
+contract PantsInterface {
 
-    function getPants(uint256 _id) external virtual view returns (
+    function getPants(uint256 _id) external view returns (
         bool isReady,
         uint256 cooldownIndex,
         uint256 backGround,
@@ -48,9 +48,9 @@ abstract contract PantsInterface {
     );
 }
 
-abstract contract UnderwearInterface {
+contract UnderwearInterface {
 
-    function getUnderwear(uint256 _id) external virtual view returns (
+    function getUnderwear(uint256 _id) external view returns (
         bool isReady,
         uint256 cooldownIndex,
         uint256 backGround,
@@ -62,9 +62,9 @@ abstract contract UnderwearInterface {
     );
 }
 
-abstract contract ShirtInterface {
+contract ShirtInterface {
 
-    function getShirt(uint256 _id) external virtual view returns (
+    function getShirt(uint256 _id) external view returns (
         bool isReady,
         uint256 cooldownIndex,
         uint256 backGround,
@@ -76,9 +76,9 @@ abstract contract ShirtInterface {
     );
 }
 
-abstract contract HoodieInterface {
+contract HoodieInterface {
 
-    function getHoodie(uint256 _id) external virtual view returns (
+    function getHoodie(uint256 _id) external view returns (
         bool isReady,
         uint256 cooldownIndex,
         uint256 backGround,
@@ -90,9 +90,9 @@ abstract contract HoodieInterface {
     );
 }
 
-abstract contract SnapbackInterface {
+contract SnapbackInterface {
 
-    function getSnapback(uint256 _id) external virtual view returns (
+    function getSnapback(uint256 _id) external view returns (
         bool isReady,
         uint256 cooldownIndex,
         uint256 backGround,

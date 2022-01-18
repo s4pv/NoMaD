@@ -5,9 +5,9 @@ import "./avatarfactory.sol";
 
 //Examples of mapping different qualities of the avatar/race that is going to be the couple to our avatar from: NFT collections, other Games, etc.
 //Example: Qualities from crypto kitties
-abstract contract KittyInterface {
+contract KittyInterface {
 
-    function getKitty(uint256 _id) external virtual view returns (
+    function getKitty(uint256 _id) external view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,
@@ -21,9 +21,9 @@ abstract contract KittyInterface {
     );
 }
 //modify
-abstract contract CypherPunkInterface {
+contract CypherPunkInterface {
 
-    function getCypherPunk(uint256 _id) external virtual view returns (
+    function getCypherPunk(uint256 _id) external view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,
@@ -37,9 +37,9 @@ abstract contract CypherPunkInterface {
     );
 }
 //modify
-abstract contract BoredApeInterface {
+contract BoredApeInterface {
 
-    function getBoredApe(uint256 _id) external virtual view returns (
+    function getBoredApe(uint256 _id) external view returns (
         bool isGestating,
         bool isReady,
         uint256 cooldownIndex,

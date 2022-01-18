@@ -10,8 +10,8 @@ contract PieceHelper is PieceMerging {
 
   function withdrawPiece() external payable onlyOwner {
     require(msg.value == withdrawPieceFee);
-    address _owner = owner();
-    payable(_owner).transfer(address(this).balance);
+    address payable _owner = address(uint160(owner()));
+    _owner.transfer(address(this).balance);
   }
 
   function changePieceDna(uint _pieceId, uint _newDna) external payable onlyOwnerOfPiece(_pieceId) {

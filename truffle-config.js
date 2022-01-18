@@ -18,10 +18,11 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
-//
+const HDWalletProvider = require("truffle-hdwallet-provider");
+// Initialize LoomTruffleProvider
+const LoomTruffleProvider = require('loom-truffle-provider');
 // const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const mnemonic = "YOUR_MNEMONIC";
 
 module.exports = {
   /**
@@ -41,11 +42,39 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-     development: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 7545,            // Standard Ethereum port (default: none)
-      network_id: "*",       // Any network (default: none)
-     },
+    //development: {
+    //  host: "127.0.0.1",     // Localhost (default: none)
+    //  port: 7545,            // Standard Ethereum port (default: none)
+    //  network_id: "*",       // Any network (default: none)
+    // },
+
+    // Configuration for mainnet
+    mainnet: {
+      provider: function () {
+        // Setting the provider with the Infura Mainnet address and Token
+        return new HDWalletProvider(mnemonic, "https://mainnet.infura.io/v3/YOUR_TOKEN")
+      },
+      network_id: "1"
+    },
+    // Configuration for rinkeby network
+    rinkeby: {
+      // Special function to setup the provider
+      provider: function () {
+        // Setting the provider with the Infura Rinkeby address and Token
+        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/YOUR_TOKEN")
+      },
+      network_id: 4 //Fill in the `network_id` for the Rinkeby network.
+    },
+    loom_testnet: {
+      provider: function() {
+        const privateKey = 'YOUR_PRIVATE_KEY'
+        const chainId = 'extdev-plasma-us1';
+        const writeUrl = 'http://extdev-plasma-us1.dappchains.com:80/rpc';
+        const readUrl = 'http://extdev-plasma-us1.dappchains.com:80/query';
+        return new LoomTruffleProvider(chainId, writeUrl, readUrl, privateKey);
+      },
+      network_id: '9545242630824'
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
@@ -71,46 +100,44 @@ module.exports = {
     // network_id: 2111,   // This network is yours, in the cloud.
     // production: true    // Treats this network as if it was a public net. (default: false)
     // }
-  },
-
-  // Set default mocha options here, use special reporters etc.
-  mocha: {
+    // Set default mocha options here, use special reporters etc.
+    mocha: {
     // timeout: 100000
-  },
-
+    },
   // Configure your compilers
-  compilers: {
-    solc: {
-      version: "0.8.10",    // Fetch exact version from solc-bin (default: truffle's version)
-      // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      //  evmVersion: "byzantium"
-      // }
-    }
-  },
+    compilers: {
+      solc: {
+        version: "0.8.10",    // Fetch exact version from solc-bin (default: truffle's version)
+        // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
+        // settings: {          // See the solidity docs for advice about optimization and evmVersion
+        //  optimizer: {
+        //    enabled: false,
+        //    runs: 200
+        //  },
+        //  evmVersion: "byzantium"
+        // }
+      }
+    },
 
-  // Truffle DB is currently disabled by default; to enable it, change enabled:
-  // false to enabled: true. The default storage location can also be
-  // overridden by specifying the adapter settings, as shown in the commented code below.
-  //
-  // NOTE: It is not possible to migrate your contracts to truffle DB and you should
-  // make a backup of your artifacts to a safe location before enabling this feature.
-  //
-  // After you backed up your artifacts you can utilize db by running migrate as follows: 
-  // $ truffle migrate --reset --compile-all
-  //
-  // db: {
-    // enabled: false,
-    // host: "127.0.0.1",
-    // adapter: {
-    //   name: "sqlite",
-    //   settings: {
-    //     directory: ".db"
-    //   }
-    // }
-  // }
+   // Truffle DB is currently disabled by default; to enable it, change enabled:
+   // false to enabled: true. The default storage location can also be
+   // overridden by specifying the adapter settings, as shown in the commented code below.
+   //
+   // NOTE: It is not possible to migrate your contracts to truffle DB and you should
+   // make a backup of your artifacts to a safe location before enabling this feature.
+   //
+   // After you backed up your artifacts you can utilize db by running migrate as follows:
+   // $ truffle migrate --reset --compile-all
+   //
+   // db: {
+   // enabled: false,
+   // host: "127.0.0.1",
+   // adapter: {
+   //   name: "sqlite",
+   //   settings: {
+   //     directory: ".db"
+   //   }
+   // }
+   // }
+  }
 };

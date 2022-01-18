@@ -17,8 +17,8 @@ contract AvatarHelper is AvatarBreeding {
 
   function withdrawAvatar() external payable onlyOwner {
     require(msg.value == withdrawAvatarFee);
-    address _owner = owner();
-    payable(_owner).transfer(address(this).balance);
+    address payable _owner = address(uint160(owner()));
+    _owner.transfer(address(this).balance);
   }
 
   uint changeAvatarNameFee = 0.01 ether;
