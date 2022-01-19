@@ -1,7 +1,7 @@
 //1. Initialize `truffle-hdwallet-provider`
 const HDWalletProvider = require("truffle-hdwallet-provider");
 // Initialize LoomTruffleProvider
-const LoomTruffleProvider = require('loom-truffle-provider');
+//const LoomTruffleProvider = require('loom-truffle-provider');
 // Set your own mnemonic here
 const mnemonic = "YOUR_MNEMONIC";
 
@@ -9,6 +9,11 @@ const mnemonic = "YOUR_MNEMONIC";
 module.exports = {
   // Object with configuration for each network
   networks: {
+    development: {
+      host: "127.0.0.1",
+      port: 7545,
+      network_id: "*" // Match any network id
+    },
     // Configuration for mainnet
     mainnet: {
       provider: function () {
@@ -37,9 +42,5 @@ module.exports = {
       },
       network_id: '9545242630824'
     }
-    //development: {
-    //  host: "127.0.0.1",
-    //  port: 7545,
-    //  network_id: "*" // Match any network id
   }
 };

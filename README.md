@@ -31,3 +31,46 @@ Through an achievement points system, leveling, stats and race, the AVATAR have 
 AVATAR and PIECE abilities will grant a real-life connection ecosystem while at the same time incentivizing real traveling: traveling discounts, hotel rooms discounts, breakfasts, etc.
 
 There will be QRs/NPCs on public plazas, airports, and public attractions near great cities all around the world, where you can start/end proof of TRAVEL quests and buy/sell travel stuff with ingame tokens.
+
+
+# Installation requirements:
+
+npm install -g solc
+
+npm install -g npm
+
+npm install -g truffle
+
+npm install truffle-hdwallet-provider
+
+npm install -g web3
+
+npm install -g mocha
+
+npm install -g ganache-cli
+
+npm install --save-dev chai
+
+
+# Testing:
+
+Instances in truffle.js & truffle-config.js written for testing:
+
+Rinkeby network ->not available
+
+loom network -> not available
+
+development local network -> choosen
+
+
+Testing with truffle + ganache client:
+
+truffle init
+
+ganache-cli -p 7545    
+
+truffle compile
+
+truffle migrate --network development
+
+truffle test
