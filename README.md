@@ -14,7 +14,7 @@ Community building.
 Efficient Consensus Mechanism based on actual blockchain capabilities and game needs.
 
 
-# 1st Approach: P2E Game (not pay to earn): LiveToTravel – CryptoZombies “fork”
+# 1st Approach: P2E Game (not pay to earn): NoMad_ – CryptoZombies “fork”
 
 Consensus Mechanism: Proof of Work. If you stay on a fixed real place (Workplace) for several hours, your avatar will start to WORK, mining MAD tokens. (Through glasses, smartwatch, notebook, and phone if possible, available and permissioned)
 
@@ -24,7 +24,7 @@ You can also mint pure AVATARS, or on the market you can trade AVATARS (NFT), PI
 
 You can BREED (mint) AVATARS (2 AVATARS -> a new AVATAR with mixed DNA) and MERGE (mint) PIECES (2 PIECES -> new PIECE with mixed characteristics) using MAD & NOMAD tokens which will be burnt.
 
-NOMAD Tokens are inflationary and LIVE tokens are deflationary. MAD tokens are the governance token for community building.
+NOMAD Tokens are inflationary and MAD tokens are deflationary. MAD tokens are the governance token for community building.
 
 Through an achievement points system, leveling, stats and race, the AVATAR have special real-life abilities and different quests access. Similar applies for PIECES.
 
