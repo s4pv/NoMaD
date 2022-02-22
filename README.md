@@ -1,4 +1,4 @@
-# LiveAndTravel
+# NoMad_
 
 # META Problem:
 Create an RPG Game/Dapp (Solidity) on an Ethereum fork with an economy/ecosystem that solves:
@@ -16,15 +16,15 @@ Efficient Consensus Mechanism based on actual blockchain capabilities and game n
 
 # 1st Approach: P2E Game (not pay to earn): LiveToTravel – CryptoZombies “fork”
 
-Consensus Mechanism: Proof of Work. If you stay on a fixed real place (Workplace) for several hours, your avatar will start to WORK, mining LIVE tokens. (Through glasses, smartwatch, notebook, and phone if possible, available and permissioned)
+Consensus Mechanism: Proof of Work. If you stay on a fixed real place (Workplace) for several hours, your avatar will start to WORK, mining MAD tokens. (Through glasses, smartwatch, notebook, and phone if possible, available and permissioned)
 
-When you TRAVEL, you will earn TRAVEL tokens (through an internal dex/swap staking or liquidity providing system of your tokens while traveling). Additional proofs may be needed and posted public or private. (photos, videos, delta-time, non-VPN GPS validation, QR scans, etc)
+When you TRAVEL, you will earn NOMAD tokens (through an internal dex/swap staking or liquidity providing system of your tokens while traveling). Additional proofs may be needed and posted public or private. (photos, videos, delta-time, non-VPN GPS validation, QR scans, etc)
 
-You can also mint pure AVATARS, or on the market you can trade AVATARS (NFT), PIECES (NFT) for LIVE & TRAVEL tokens respectively. Also you can migrate your existing NFTs: CypherPunks, BoredApes, etc.
+You can also mint pure AVATARS, or on the market you can trade AVATARS (NFT), PIECES (NFT) for MAD & NOMAD tokens respectively. Also you can migrate your existing NFTs: CypherPunks, BoredApes, etc.
 
-You can BREED (mint) AVATARS (2 AVATARS -> a new AVATAR with mixed DNA) and MERGE (mint) PIECES (2 PIECES -> new PIECE with mixed characteristics) using LIVE & TRAVEL tokens which will be burnt.
+You can BREED (mint) AVATARS (2 AVATARS -> a new AVATAR with mixed DNA) and MERGE (mint) PIECES (2 PIECES -> new PIECE with mixed characteristics) using MAD & NOMAD tokens which will be burnt.
 
-TRAVEL Tokens are inflationary and LIVE tokens are deflationary. LIVE tokens are the governance token for community building.
+NOMAD Tokens are inflationary and LIVE tokens are deflationary. MAD tokens are the governance token for community building.
 
 Through an achievement points system, leveling, stats and race, the AVATAR have special real-life abilities and different quests access. Similar applies for PIECES.
 
